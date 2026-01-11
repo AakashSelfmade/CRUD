@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Arun Kumar", "age": 28, "city": "Chennai" },
+  { "id": 2, "name": "Priya Dharshini", "age": 24, "city": "Coimbatore" },
+  { "id": 3, "name": "Vijay Sethu", "age": 32, "city": "Madurai" },
+  { "id": 4, "name": "Deepa Rajan", "age": 29, "city": "Salem" },
+  { "id": 5, "name": "Santhosh Mani", "age": 26, "city": "Trichy" },
+  { "id": 6, "name": "Kavitha Selvam", "age": 31, "city": "Erode" },
+  { "id": 7, "name": "Rajesh Kannan", "age": 27, "city": "Vellore" },
+  { "id": 8, "name": "Anitha Balu", "age": 23, "city": "Tirunelveli" },
+  { "id": 9, "name": "Manoj Prabhakar", "age": 35, "city": "Thanjavur" },
+  { "id": 10, "name": "Suresh Raina", "age": 30, "city": "Kanchipuram" }
+]
