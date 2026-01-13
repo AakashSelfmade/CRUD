@@ -8,5 +8,6 @@
   { "id": 7, "name": "Rajesh Kannan", "age": 27, "city": "Vellore" },
   { "id": 8, "name": "Anitha Balu", "age": 23, "city": "Tirunelveli" },
   { "id": 9, "name": "Manoj Prabhakar", "age": 35, "city": "Thanjavur" },
-  { "id": 10, "name": "Suresh Raina", "age": 30, "city": "Kanchipuram" }
+  { "id": 10, "name": "Suresh Raina", "age": 30, "city": "Kanchipuram" },
+  { "id": 11, "name": "Suresh Kumar", "age": 30, "city": "Namakkal" }
 ]
