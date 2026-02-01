@@ -4,23 +4,79 @@ import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [filterUser, setFilterUser ] = useState([]);
+  const [isModelOpen, setIsModelOpen]= useState(false);
+  const [userData, setUserData] = useState({name:"", age:"", city:""});
 
+  //Read the date
   const getAllUsers = async () => {
     await axios.get("http://localhost:8000/users").then((res) => {
       setUsers(res.data);
+      setFilterUser(res.data);
     });
   };
 
   useEffect(() => {
     getAllUsers();
   }, []);
+
+  //Search Function
+  const handleSearchChange = (e) =>{
+    const searchText = e.target.value.toLowerCase();
+    const filteredUsers = users.filter((user)=>user.name.toLowerCase().includes(searchText) || user.city.toLowerCase().includes(searchText));
+    setFilterUser(filteredUsers);
+  }
+
+  //Delete User Function
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this user?");
+
+    if (isConfirmed){
+    await axios.delete(`http://localhost:8000/users/${id}`)
+    .then((res) => {
+      setUsers(res.data);
+      setFilterUser(res.data);
+    })
+  }
+  };
+
+  //Add user details
+  const handleAddRecord = () =>{
+      setUserData({name:"", age:"", city:""});
+      setIsModelOpen(true);
+  };
+
+    const handleData = (e) =>{
+      setUserData({...userData, [e.target.name]: e.target.value})
+  }
+        //-- Handle submit --
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          await axios.post("http://localhost:8000/users",userData).then((res) => {
+            console.log(res)
+          })
+        }
+
+
+//Update user function
+const handleUpdateRecord = (user) =>{
+  setUserData(user);
+  setIsModelOpen(true);
+}
+
+  //Close model
+  const closeModel = () => {
+    setIsModelOpen(false);
+    getAllUsers();
+  }
+
   return (
     <>
       <div className="container">
         <h3>CRUD Application with React.js Frontend and Node.js Backend</h3>
         <div className="input-search">
-          <input type="search" />
-          <button className="btn green">Add Record</button>
+          <input type="search" placeholder="Search here" onChange={handleSearchChange}/>
+          <button className="btn green" onClick={handleAddRecord}>Add Record</button>
         </div>
         <table className="table">
           <thead>
@@ -34,25 +90,46 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {users &&
-              users.map((user,index) => {
+            {filterUser &&
+              filterUser.map((user,index) => {
                 return (
                   <tr key={user.id}>
-                    <td>{index}</td>
+                    <td>{index +1}</td>
                     <td>{user.name}</td>
                     <td>{user.age}</td>
                     <td>{user.city}</td>
                     <td>
-                      <button className="btn green">Edit</button>
+                      <button className="btn green" onClick={() => handleUpdateRecord(user)}>Edit</button>
                     </td>
                     <td>
-                      <button className="btn red">Delete</button>
+                      <button onClick={()=>handleDelete(user.id)} className="btn red">Delete</button>
                     </td>
                   </tr>
                 );
               })}
           </tbody>
         </table>
+        {isModelOpen && (<div className="model">
+          <div className="model-content">
+            <span className="close" onClick={closeModel}>
+              &times;
+            </span>
+            <h2>User Record</h2>
+            <div className="input-group">
+              <label htmlFor="name">Full Name</label>
+              <input type="text" value={userData.name} name="name" id="name" onChange={handleData}/>
+            </div>
+            <div className="input-group">
+              <label htmlFor="age">Age</label>
+              <input type="number" value={userData.age} name="age" id="age" onChange={handleData}/>
+            </div>
+            <div className="input-group">
+              <label htmlFor="city">City</label>
+              <input type="text" value={userData.city} name="city" id="city" onChange={handleData}/>
+            </div>
+            <button className="btn green" onClick={handleSubmit}>Add User</button>
+          </div>
+          </div>)}
       </div>
     </>
   );
