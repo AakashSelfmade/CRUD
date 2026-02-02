@@ -52,10 +52,18 @@ function App() {
         //-- Handle submit --
         const handleSubmit = async (e) => {
           e.preventDefault();
-          await axios.post("http://localhost:8000/users",userData).then((res) => {
+          if(userData.id){
+            await axios.patch(`http://localhost:8000/users/${userData.id}`,userData).then((res) => {
             console.log(res)
           })
-        }
+          }else{
+          await axios.post("http://localhost:8000/users",userData).then((res) => {
+            console.log(res)
+          });
+          }
+          closeModel();
+          setUserData({name:"", age:"", city:""});
+        };
 
 
 //Update user function
@@ -114,7 +122,7 @@ const handleUpdateRecord = (user) =>{
             <span className="close" onClick={closeModel}>
               &times;
             </span>
-            <h2>User Record</h2>
+            <h2>{userData.id ? "Update Record" : "Add Record"}</h2>
             <div className="input-group">
               <label htmlFor="name">Full Name</label>
               <input type="text" value={userData.name} name="name" id="name" onChange={handleData}/>
@@ -127,7 +135,7 @@ const handleUpdateRecord = (user) =>{
               <label htmlFor="city">City</label>
               <input type="text" value={userData.city} name="city" id="city" onChange={handleData}/>
             </div>
-            <button className="btn green" onClick={handleSubmit}>Add User</button>
+            <button className="btn green" onClick={handleSubmit}>{userData.id ? "Update User" : "Add User"}</button>
           </div>
           </div>)}
       </div>

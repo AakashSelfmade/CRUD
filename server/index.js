@@ -39,8 +39,24 @@ app.post("/users",(req,res) => {
     fs.writeFile("./sample.json",JSON.stringify(users),(err,data) => {
         return res.json({message : "User detail added success"});
     });
+});
 
-    
+//Update user
+app.patch("/users/:id",(req,res) => {
+    let id = Number(req.params.id);
+    let {name, age, city} = req.body;
+
+    if(!name || !age || !city){
+        return res.status(400).send({message: "All Fields Required"})
+    }
+
+    let index = users.findIndex((user) => user.id == id);
+
+    users.splice(index,1,{...req.body})
+  
+    fs.writeFile("./sample.json",JSON.stringify(users),(err,data) => {
+        return res.json({message : "User detail updated success"});
+    });
 });
 
 app.listen(port, (err) => {
